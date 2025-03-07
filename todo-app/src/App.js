@@ -1,7 +1,6 @@
-import React from 'react';
-import TaskInput from './components/TaskInput';
-import TaskList from './components/TaskList';
-import './css/styles.css';
+import React from "react";
+import TaskInput from "./components/TaskInput";
+import TaskList from "./components/TaskList";
 
 const App = () => {
     return (
@@ -12,4 +11,5 @@ const App = () => {
         </div>
     );
 };
+
 export default App;

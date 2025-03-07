@@ -1,21 +1,39 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
+
+const loadTasks = () => JSON.parse(localStorage.getItem("tasks")) || [];
+const saveTasks = (tasks) => localStorage.setItem("tasks", JSON.stringify(tasks));
 
 const taskSlice = createSlice({
-    name: 'tasks',
-    initialState: [],
+    name: "tasks",
+    initialState: loadTasks(),
     reducers: {
         addTask: (state, action) => {
-            state.push({ id: Date.now(), text: action.payload, completed: false });
+            const newTask = { id: Date.now(), title: action.payload, completed: false };
+            state.push(newTask);
+            saveTasks(state);
+        },
+        removeTask: (state, action) => {
+            const updatedTasks = state.filter(task => task.id !== action.payload);
+            saveTasks(updatedTasks);
+            return updatedTasks;
         },
         toggleTask: (state, action) => {
-            const task = state.find(task => task.id === action.payload);
-            if (task) task.completed = !task.completed;
+            const updatedTasks = state.map(task => 
+                task.id === action.payload ? { ...task, completed: !task.completed } : task
+            );
+            saveTasks(updatedTasks);
+            return updatedTasks;
         },
-        deleteTask: (state, action) => {
-            return state.filter(task => task.id !== action.payload);
+        editTask: (state, action) => {
+            const { id, newTitle } = action.payload;
+            const updatedTasks = state.map(task => 
+                task.id === id ? { ...task, title: newTitle } : task
+            );
+            saveTasks(updatedTasks);
+            return updatedTasks;
         }
     }
 });
 
-export const { addTask, toggleTask, deleteTask } = taskSlice.actions;
+export const { addTask, removeTask, toggleTask, editTask } = taskSlice.actions;
 export default taskSlice.reducer;
