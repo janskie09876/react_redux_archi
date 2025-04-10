@@ -28,7 +28,7 @@ const TaskInput = () => {
                 type="text" 
                 value={input} 
                 onChange={(e) => setInput(e.target.value)}
-                placeholder="Enter email to add task"
+                placeholder="Enter to add task"
                 className={error ? "error" : ""}
             />
             <button onClick={handleAddTask}>Add Task</button>
